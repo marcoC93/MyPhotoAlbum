@@ -13,7 +13,7 @@ import com.example.demo.model.Photo;
 
 @org.springframework.web.bind.annotation.RestController
 
-public class RestController {
+public class PhotoController {
 
 	@RequestMapping("/api/photos")
 	public Iterable<Photo> getAll() {
