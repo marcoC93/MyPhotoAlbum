@@ -78,4 +78,17 @@ public class AdminPhotoController {
 		
 		return foundPhoto.get();
 	}
+	@RequestMapping(value="/admin/api/photos/{id}" , method = RequestMethod.DELETE) 
+	public void delete(@PathVariable int id) {
+		
+		Optional<Photo> foundPhoto = list.stream().filter(item->item.getId() == id).findFirst();
+		
+		if(foundPhoto.isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "item not found");
+			
+		}
+		list.remove(foundPhoto.get() );
+		
+	
+	}
 }
