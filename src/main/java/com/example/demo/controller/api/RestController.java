@@ -15,7 +15,7 @@ public class RestController {
 	public Iterable<Photo> getAll() {
 		
 		List<Photo> list = new ArrayList<Photo>();
-		
+		list.add(new Photo(1, "/img/22.png"));
 		return list ;
 	}
 }
