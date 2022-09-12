@@ -14,7 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.model.Photo;
 
-@Service("mainPhotoService")
+@Service
 
 public class PhotoService implements IPhotoService {
 

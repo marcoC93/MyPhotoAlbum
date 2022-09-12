@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,27 +14,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.model.Photo;
+import com.example.demo.repository.IPhotoRepository;
 
+@Service("mainPhotoService")
 public class DbPhotoService implements IPhotoService {
 
-	List<Photo> list = new ArrayList<Photo>();
-	private int lastId ;
-	
-	
-	public DbPhotoService() {
-		list.add(new Photo(1, "/img/22.png"));
-		list.add(new Photo(2, "/img/23.png"));
-		list.add(new Photo(3, "/img/24.png"));
-		list.add(new Photo(4, "/img/25.png"));
-		lastId = 3 ;
+	@Autowired
+	private IPhotoRepository photoRepository;
 
-	}
 	
 	@Override 
 	@RequestMapping("/admin/api/photos")
 	public Iterable<Photo> getAll() {
 
-		return new ArrayList<Photo>() ;
+		return photoRepository.findAll() ;
 	}
 	
 	@Override
@@ -41,26 +35,42 @@ public class DbPhotoService implements IPhotoService {
 	public Optional<Photo> getById(int id) {
 		
 
-		return Optional.empty() ;
+		return photoRepository.findById(id) ;
 
 	}
 	
 	@Override
 	public Photo create(Photo photo ) {
 		
-		return null ;
+		return photoRepository.save(photo) ;
 	}
 	
 	@Override
 	public Optional<Photo> update(int id,  Photo photo ) {
 		
-		return Optional.empty();
+		Optional<Photo> foundPhoto = photoRepository.findById(id);
+		if (foundPhoto.isEmpty()) {
+		
+			return Optional.empty()   ;
+		}
+		
+		foundPhoto.get().setUrl(photo.getUrl());
+		photoRepository.save(foundPhoto.get());
+		return foundPhoto;
+		
 	}
 	
 	@Override
 	public Boolean delete(int id) {
 		
-		return false ;
+		Optional<Photo> foundPhoto = photoRepository.findById(id);
+		if (foundPhoto.isEmpty()) {
 		
+			return false   ;
+		}
+		
+		photoRepository.delete(foundPhoto.get() ); 
+		
+		return true ;
 	}
 }
