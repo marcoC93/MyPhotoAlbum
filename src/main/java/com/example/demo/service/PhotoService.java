@@ -76,6 +76,7 @@ public class PhotoService implements IPhotoService {
 
 			Optional.empty();
 		}
+		
 		foundPhoto.get().setUrl(photo.getUrl());
 		
 		return foundPhoto;
